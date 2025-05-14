@@ -34,6 +34,7 @@ int main()
 
     // Launch kernel
     matrix_addition<<<gridDim, blockDim>>>(Ad, Bd, Cd, M, N);
+    cudaDeviceSynchronize();
 
     // Copy result from device to host
     cudaMemcpy(C, Cd, size, cudaMemcpyDeviceToHost);

@@ -30,6 +30,7 @@ int main()
 
     // Launch kernel
     vector_addition<<<gridSize, blockSize>>>(Ad, Bd, Cd, N);
+    cudaDeviceSynchronize();
 
     // Copy result from device to host
     cudaMemcpy(C, Cd, N * (sizeof(float)), cudaMemcpyDeviceToHost);
