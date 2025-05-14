@@ -1,21 +1,24 @@
-#include<iostream>
+#include <iostream>
 
-__global__ void vector_addition(const float *a, const float *b, float *c, int N){
+__global__ void vector_addition(const float *a, const float *b, float *c, int N)
+{
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
-    if (idx < N){
+    if (idx < N)
+    {
         c[idx] = a[idx] + b[idx];
     }
 }
 
-int main(){
+int main()
+{
     int N = 100;
-    float A[n], B[n], C[n];
+    float A[N], B[N], C[N];
     float *Ad, *Bd, *Cd;
 
-    //Allocate memory on the device 
-    cudaMalloc((void**)&Ad, N * (sizeof(float)));
-    cudaMalloc((void**)&Bd, N * (sizeof(float)));
-    cudaMalloc((void**)&Cd, N * (sizeof(float)));
+    // Allocate memory on the device
+    cudaMalloc((void **)&Ad, N * (sizeof(float)));
+    cudaMalloc((void **)&Bd, N * (sizeof(float)));
+    cudaMalloc((void **)&Cd, N * (sizeof(float)));
 
     // Copy data from host to device
     cudaMemcpy(Ad, A, N * (sizeof(float)), cudaMemcpyHostToDevice);
@@ -23,7 +26,7 @@ int main(){
 
     // Configure execution parameters
     int blockSize = 256;
-    int gridSize = ceil(N / blockSize);  
+    int gridSize = ceil(N / blockSize);
 
     // Launch kernel
     vector_addition<<<gridSize, blockSize>>>(Ad, Bd, Cd, N);
