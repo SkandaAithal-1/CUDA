@@ -15,3 +15,10 @@ Implemented a simple kernel to add two vectors. Explored launching kernels, devi
 
 **Summary** :  
 Implemented a kernel to add two matrices. Learnt about barrier synchronisation, thread scheduling, hardware resource management (warps and stuff) and latency tolerance.
+
+---
+
+## Task 03: Matrix Vector Multiplication
+
+**Summary** :
+Implemented a kernel to multiply a matrix with a vector. Explored shared memory, thread cooperation and performance optimisations.
