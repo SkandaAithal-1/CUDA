@@ -26,7 +26,7 @@ int main()
 
     // Configure execution parameters
     int blockSize = 256;
-    int gridSize = ceil(N / blockSize);
+    int gridSize = ceil((float)N / blockSize);
 
     // Launch kernel
     vector_addition<<<gridSize, blockSize>>>(Ad, Bd, Cd, N);

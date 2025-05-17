@@ -30,7 +30,7 @@ int main()
 
     // Execution parameter configuration
     dim3 blockDim(16, 16);
-    dim3 gridDim(ceil(M / blockDim.x), ceil(N / blockDim.y));
+    dim3 gridDim(ceil((float)M / blockDim.x), ceil((float)N / blockDim.y));
 
     // Launch kernel
     matrix_addition<<<gridDim, blockDim>>>(Ad, Bd, Cd, M, N);
