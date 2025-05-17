@@ -1,5 +1,7 @@
 #include <iostream>
 
+const int TILE_WIDTH = 256;
+
 __global__ void matrix_vector_mult(const float *A, const float *x, float* y, int M, int N){
     int row = blockIdx.x * blockDim.x + threadIdx.x;
     if (row < M){
@@ -10,31 +12,36 @@ __global__ void matrix_vector_mult(const float *A, const float *x, float* y, int
 }
 
 __global__ void matrix_vector_mult_optim(const float *A, const float *x, float *y, int M, int N){
-    int bx = blockIdx.x, by = blockIdx.y;
-    int tx = threadIdx.x, ty = threadIdx.y;
-    // int TILE_WIDTH = bx;
+    int bx = blockIdx.x;
+    int tx = threadIdx.x;
     int row = bx * blockDim.x + tx;
-    if (row >= M) return;
 
-    __shared__ float x_shared[bx]; // bx = TILE_WIDTH 
+    __shared__ float x_shared[TILE_WIDTH]; // bx = TILE_WIDTH
     float sum = 0;
-    for (int phase=0; phase < (int)(N/bx); phase++){  // bx = TILE_WIDTH
+    for (int phase=0; phase < ceil((float)N/TILE_WIDTH); phase++){  // bx = TILE_WIDTH
         // Load x into shared memory
-        if (phase * bx + tx < N){
-            x_shared[tx] = x[phase * bx + tx]; // bx = TILE_WIDTH
+        if (phase * TILE_WIDTH + tx < N){
+            x_shared[tx] = x[phase * TILE_WIDTH + tx];
         }else{
             x_shared[tx] = 0;
         }
         __syncthreads();
 
-        // Accumulate the sum for this phase
-        for (int i=0; i<bx; i++){ // bx = TILE_WIDTH
-            if (phase * bx + i >= N) break;
-            sum += A[row * N + phase * bx + i] * x_shared[i]; // bx = TILE_WIDTH
+        if (row < M){
+            // Accumulate the sum for this phase
+            for (int i=0; i<TILE_WIDTH; i++){ // bx = TILE_WIDTH
+                if (phase * TILE_WIDTH + i >= N) break;
+                sum += A[row * N + phase * TILE_WIDTH + i] * x_shared[i]; // bx = TILE_WIDTH
+            }
         }
         __syncthreads();
     }
-    y[row] = sum;
+    if (row < M) y[row] = sum;
+}
+
+void print_array(const float *arr, int N){
+    for (int i=0; i<N; i++) std::cout << arr[i] << " ";
+    std::cout << std::endl;
 }
 
 int main()
@@ -57,7 +64,7 @@ int main()
 
     // Execution parameters configuration
     int blockSize = 256;
-    int gridSize = ceil(M / blockSize);
+    int gridSize = ceil((float)M / blockSize);
 
     // Launch kernel
     matrix_vector_mult<<<gridSize, blockSize>>>(Ad, xd, yd, M, N);
