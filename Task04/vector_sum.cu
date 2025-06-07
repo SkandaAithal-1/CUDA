@@ -15,7 +15,7 @@ int main()
     int N = 8;
     float x[N] = {1, 2, 3, 4, 5, 6, 7, 8};
     float *xd;
-    float y;
+    float y[N];
 
     cudaMalloc((void **)&xd, N * sizeof(float));
 
@@ -31,7 +31,7 @@ int main()
 
     cudaDeviceSynchronize();
 
-    cudaMemcpy(y, xd, sizeof(float), cudaMemcpyDeviceToHost);
+    cudaMemcpy(y, xd, N * sizeof(float), cudaMemcpyDeviceToHost);
 
-    std::cout << "Sum : " << y << std::endl;
+    std::cout << "Sum : " << y[0] << std::endl;
 }
