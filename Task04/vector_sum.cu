@@ -14,6 +14,7 @@ int main()
 {
     int N = 8;
     float x[N] = {1, 2, 3, 4, 5, 6, 7, 8};
+    float *xd;
     float y;
 
     cudaMalloc((void **)&xd, N * sizeof(float));
