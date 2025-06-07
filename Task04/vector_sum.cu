@@ -1,6 +1,6 @@
-#include<iostream>
+#include <iostream>
 
-__global__ void vector_sum(const float *x, int N)
+__global__ void vector_sum(float *x, int N)
 {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     int stride = N >> 1;
@@ -13,7 +13,7 @@ __global__ void vector_sum(const float *x, int N)
 int main()
 {
     int N = 8;
-    float x[N] = [1, 2, 3, 4, 5, 6, 7, 8];
+    float x[N] = [ 1, 2, 3, 4, 5, 6, 7, 8 ];
     float y;
 
     cudaMalloc((void **)&xd, N * sizeof(float));
@@ -23,7 +23,8 @@ int main()
     int blockSize = 256;
     int gridSize = (N + blockSize - 1) / blockSize;
 
-    for (int size = N; size > 0; size >>= 1){
+    for (int size = N; size > 0; size >>= 1)
+    {
         vector_sum<<<gridSize, blockSize>>>(xd, size);
     }
 
