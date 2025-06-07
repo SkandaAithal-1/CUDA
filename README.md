@@ -21,4 +21,9 @@ Implemented a kernel to add two matrices. Learnt about barrier synchronisation, 
 ## Task 03: Matrix Vector Multiplication
 
 **Summary** :
-Implemented a kernel to multiply a matrix with a vector. Explored shared memory, thread cooperation and performance optimisations.
+Implemented a kernel to multiply a matrix with a vector. Explored shared memory, thread cooperation and performance optimisations. 
+
+## Task 04: Vector sum 
+
+**Summary** :  
+Implemented a kernel to compute the sum of all elements of a vector. Explored reduction techniques, and warp divergence and performance optimisations.
