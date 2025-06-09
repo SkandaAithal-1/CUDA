@@ -27,3 +27,8 @@ Implemented a kernel to multiply a matrix with a vector. Explored shared memory,
 
 **Summary** :  
 Implemented a kernel to compute the sum of all elements of a vector. Explored reduction techniques, and warp divergence and performance optimisations.
+
+## Task 05: Layer Normalization
+
+**Summary** :
+Implemented a kernel to perform layer normalization on a matrix.
