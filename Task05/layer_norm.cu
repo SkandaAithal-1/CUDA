@@ -78,7 +78,7 @@ int main()
         7.0f, 8.0f, 9.0f};
 
     float y[N * M];
-    float *y = launch_layer_norm(x, y, N, M, epsilon);
+    launch_layer_norm(x, y, N, M, epsilon);
 
     for (int i = 0; i < N; i++)
     {
