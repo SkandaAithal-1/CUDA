@@ -19,7 +19,7 @@ __global__ void layer_norm(float *x, float *y, int N, int M, float epsilon)
         {
             row_data[col_idx] = x[row_idx * M + col_idx];
         }
-        __syncthread();
+        __syncthreads();
 
         // Calculate mean
         for (int col_idx = 0; col_idx < M; col_idx++)
@@ -43,22 +43,22 @@ __global__ void layer_norm(float *x, float *y, int N, int M, float epsilon)
     }
 }
 
-float[] launch_layer_norm(float *x, int N, int M, float epsilon)
+float *launch_layer_norm(float *x, int N, int M, float epsilon)
 {
     // Launches the CUDA kernel for layer normalization
     float y[N * M];
     float *xd, *yd;
 
     // Allocate device memory
-    cudaMalloc((void**)&xd, N * M * sizeof(float));
-    cudaMalloc((void**)&yd, N * M * sizeof(float));
+    cudaMalloc((void **)&xd, N * M * sizeof(float));
+    cudaMalloc((void **)&yd, N * M * sizeof(float));
 
     // Copy data from host to device
     cudaMemcpy(xd, x, N * M * sizeof(float), cudaMemcpyHostToDevice);
-    
+
     // Execution parameter configuration
     dim3 blockDim(16, 16);
-    int gridDim = (N + blockDim.x - 1)/blockDim.x;
+    int gridDim = (N + blockDim.x - 1) / blockDim.x;
     size_t shared_mem_size = M * sizeof(float);
 
     // Launch the kernel
@@ -78,13 +78,14 @@ int main()
     float x[] = {
         1.0f, 2.0f, 3.0f,
         4.0f, 5.0f, 6.0f,
-        7.0f, 8.0f, 9.0f
-    };
+        7.0f, 8.0f, 9.0f};
 
     float *y = launch_layer_norm(x, N, M, epsilon);
 
-    for (int i=0; i<N; i++){
-        for (int j=0; j<M; j++){
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < M; j++)
+        {
             std::cout << y[i * M + j] << " ";
         }
         std::cout << std::endl;
