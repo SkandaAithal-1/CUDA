@@ -4,7 +4,7 @@
 __global__ void layer_norm(float *x, float *y, int N, int M, float epsilon)
 {
     int tx = threadIdx.x, ty = threadIdx.y;
-    int bx = blockIdx.x, by = blockIdx.y;
+    int bx = blockIdx.x;
     int row_idx = bx * blockDim.x + tx;
     if (row_idx < N)
     {
@@ -43,10 +43,9 @@ __global__ void layer_norm(float *x, float *y, int N, int M, float epsilon)
     }
 }
 
-float *launch_layer_norm(float *x, int N, int M, float epsilon)
+void launch_layer_norm(float *x, float *y, int N, int M, float epsilon)
 {
     // Launches the CUDA kernel for layer normalization
-    float y[N * M];
     float *xd, *yd;
 
     // Allocate device memory
@@ -67,8 +66,6 @@ float *launch_layer_norm(float *x, int N, int M, float epsilon)
 
     // Copy results to the host
     cudaMemcpy(y, yd, N * M * sizeof(float), cudaMemcpyDeviceToHost);
-
-    return y;
 }
 
 int main()
@@ -80,7 +77,8 @@ int main()
         4.0f, 5.0f, 6.0f,
         7.0f, 8.0f, 9.0f};
 
-    float *y = launch_layer_norm(x, N, M, epsilon);
+    float y[N * M];
+    float *y = launch_layer_norm(x, y, N, M, epsilon);
 
     for (int i = 0; i < N; i++)
     {
