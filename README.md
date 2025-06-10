@@ -37,3 +37,8 @@ Implemented a kernel to perform layer normalization on a matrix.
 
 **Summary** :  
 Implemented a kernel to compute the dot product of two vectors. Used vector sum kernel previously implemented to compute the sum of products.
+
+## Task 07: L2 Norm
+
+**Summary** :  
+Implemented a kernel to compute the L2 norm of a vector. Used vector sum kernel again.
