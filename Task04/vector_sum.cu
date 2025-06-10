@@ -1,5 +1,5 @@
 #include <iostream>
-#include "kernels.cuh"
+#include "../kernels.cuh"
 
 __global__ void vector_sum(float *x, int N)
 {
