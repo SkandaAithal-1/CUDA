@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 #include "kernels.cuh"
 
 __global__ void element_wise_square(const float *x, float *y, int N)
@@ -32,6 +33,7 @@ void l2_norm(const float *x, float *y, int N)
     cudaDeviceSynchronize();
 
     cudaMemcpy(y, yd, sizeof(float), cudaMemcpyDeviceToHost);
+    *y = sqrtf(*y);
     cudaFree(xd);
     cudaFree(yd);
 }
