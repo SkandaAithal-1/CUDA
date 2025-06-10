@@ -1,4 +1,5 @@
 #include <iostream>
+#include "kernels.cuh"
 
 const int TILE_WIDTH = 256;
 

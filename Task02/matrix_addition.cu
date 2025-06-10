@@ -1,4 +1,5 @@
 #include <iostream>
+#include "kernels.cuh"
 
 __global__ void matrix_addition(const float *A, const float *B, float *C, int M, int N)
 {

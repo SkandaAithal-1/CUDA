@@ -1,4 +1,5 @@
 #include <iostream>
+#include "kernels.cuh"
 
 __global__ void vector_addition(const float *a, const float *b, float *c, int N)
 {
