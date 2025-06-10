@@ -32,3 +32,8 @@ Implemented a kernel to compute the sum of all elements of a vector. Explored re
 
 **Summary** :
 Implemented a kernel to perform layer normalization on a matrix.
+
+## Task 06: Dot Product
+
+**Summary** :  
+Implemented a kernel to compute the dot product of two vectors. Used vector sum kernel previously implemented to compute the sum of products.
