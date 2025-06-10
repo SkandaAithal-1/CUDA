@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Task04/vector_sum.cu"
+#include "kernels.cuh"
 
 __global__ void element_wise_vector_prod(const float *a, const float *b, float *res, int N)
 {
