@@ -42,3 +42,8 @@ Implemented a kernel to compute the dot product of two vectors. Used vector sum 
 
 **Summary** :  
 Implemented a kernel to compute the L2 norm of a vector. Used vector sum kernel again.
+
+## Task 08: Transpose 
+
+**Summary** :  
+Implemented a kernel to transpose a matrix. 
