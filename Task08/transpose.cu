@@ -11,7 +11,7 @@ __global__ void transpose(const float *A, float *B, int M, int N)
     }
 }
 
-void invoke_transpose(const float *A, float *B, int M, int N)
+void launch_transpose(const float *A, float *B, int M, int N)
 {
     float *Ad, *Bd;
     cudaMalloc((void**)&Ad, M * N * sizeof(float));
@@ -38,7 +38,7 @@ int main()
                    9.0f, 10.0f, 11.0f, 12.0f,
                    13.0f, 14.0f, 15.0f, 16.0f};
     float B[M * N];
-    invoke_transpose(A, B, M, N);
+    launch_transpose(A, B, M, N);
     std::cout << "Transposed Matrix B:" << std::endl;
     for (int i=0; i<N; i++)
     {

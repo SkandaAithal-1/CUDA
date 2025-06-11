@@ -57,3 +57,8 @@ Implemented a kernel to compute the L2 norm of a vector. Used vector sum kernel 
 
 **Summary** :  
 Implemented a kernel to transpose a matrix. 
+
+## Task 09: 1d Convolution
+
+**Summary** :  
+Implemented a simple kernel for 1d convolution with no optimisation consideration. Will optimise it further.
