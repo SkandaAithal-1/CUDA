@@ -34,7 +34,7 @@ Implemented a kernel to compute the sum of all elements of a vector. Explored re
 
 ## Task 05: Layer Normalization
 
-**Summary** :
+**Summary** :  
 Implemented a kernel to perform layer normalization on a matrix.
 
 ---
