@@ -96,6 +96,13 @@ int main()
     {
         std::cout << c[i] << " ";
     }
+
+    std::cout << "Convolution optimised result: ";
+    for (int i = 0; i < N - K + 1; i++)
+    {
+        std::cout << c_optim[i] << " ";
+    }
+
     std::cout << std::endl;
     return 0;
 }
