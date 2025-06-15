@@ -50,12 +50,12 @@ __global__ void conv1d(const float *in, float *out, int N)
 void launch_conv1d(const float *a, const float *b, float *c, int N){
     float *ad, *cd;
     cudaMalloc((void**)&ad, N * sizeof(float));
-    cudaMalloc((void **)&cd, (N - K + 1) * sizeof(float));
+    cudaMalloc((void **)&cd, (N - KERNEL_WIDTH + 1) * sizeof(float));
 
     cudaMemcpy(ad, a, N * sizeof(float), cudaMemcpyHostToDevice);
-    cudaMemcpyToSymbol(kernel, b, N * sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpyToSymbol(kernel, b, KERNEL_WIDTH * sizeof(float));
 
-    int blockSize = TILE_WIDTH;
+    int blockSize = INTPUT_TILE_WIDTH;
     int gridSize = (N + blockSize - 1) / blockSize;
 
     conv1d<<<gridSize, blockSize>>>(ad, cd, N);
