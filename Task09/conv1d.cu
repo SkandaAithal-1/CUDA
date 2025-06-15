@@ -1,4 +1,5 @@
 #include <iostream>
+#include "utils.h"
 
 // Assumptions : 
 // KERNEL_WIDTH is small and can fit in connstant memory
@@ -90,28 +91,21 @@ void launch_conv1d_unoptim(const float *a, const float *b, float *c, int N, int 
 int main()
 {
     int N = 10;
-    int K = 3;
+    int K = KERNEL_WIDTH;
     float a[N] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    float b[K] = {1, 0, -1};
+    float b[K] = {2, 1, 0, -1, -2};
     float c[N - K + 1];
     float c_optim[N - K + 1] = {0.0f};
 
     launch_conv1d_unoptim(a, b, c, N, K);
 
-    launch_conv1d(a, b, c_optim, N, K);
+    launch_conv1d(a, b, c_optim, N);
 
-    std::cout << "Convolution result: ";
-    for (int i = 0; i < N - K + 1; i++)
-    {
-        std::cout << c[i] << " ";
-    }
+    std::cout << "Convolution result : ";
+    print_array(c, N - KERNEL_WIDTH + 1);
 
     std::cout << "Convolution optimised result: ";
-    for (int i = 0; i < N - K + 1; i++)
-    {
-        std::cout << c_optim[i] << " ";
-    }
+    print_array(c_optim, N - KERNEL_WIDTH + 1);
 
-    std::cout << std::endl;
     return 0;
 }
