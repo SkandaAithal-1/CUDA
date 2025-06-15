@@ -21,11 +21,11 @@ Implemented a kernel to add two matrices. Learnt about barrier synchronisation, 
 ## Task 03: Matrix Vector Multiplication
 
 **Summary** :
-Implemented a kernel to multiply a matrix with a vector. Explored shared memory, thread cooperation and performance optimisations. 
+Implemented a kernel to multiply a matrix with a vector. Explored shared memory, thread cooperation and performance optimisations.
 
 ---
 
-## Task 04: Vector sum 
+## Task 04: Vector sum
 
 **Summary** :  
 Implemented a kernel to compute the sum of all elements of a vector. Explored reduction techniques, and warp divergence and performance optimisations.
@@ -53,12 +53,15 @@ Implemented a kernel to compute the L2 norm of a vector. Used vector sum kernel 
 
 ---
 
-## Task 08: Transpose 
+## Task 08: Transpose
 
 **Summary** :  
-Implemented a kernel to transpose a matrix. 
+Implemented a kernel to transpose a matrix.
 
 ## Task 09: 1d Convolution
 
 **Summary** :  
 Implemented a simple kernel for 1d convolution with no optimisation consideration. Will optimise it further.
+
+**Update** :  
+Optimized the kernel to use shared memory to reduce global memory access. Tiling is done so that the thread block covers the input vector.
