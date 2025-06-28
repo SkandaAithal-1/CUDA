@@ -2,7 +2,7 @@
 #include "utils.h"
 
 // Assumptions : 
-// KERNEL_WIDTH is small and can fit in connstant memory
+// KERNEL_WIDTH is small and can fit in constant memory
 // KERNEL_WIDTH is odd
 
 const int INPUT_TILE_WIDTH = 256;
@@ -27,24 +27,66 @@ __global__ void conv1d(const float *in, float *out, int N)
 {
     int tx = threadIdx.x;
     int bx = blockIdx.x;
-    int inputIdx = bx * blockDim.x + tx;
+    int outputTileSize = INPUT_TILE_WIDTH - 2 * (KERNEL_WIDTH/2);
     int radius = KERNEL_WIDTH/2;
+    int inputIdx = bx * outputTileSize + tx - radius;
 
     __shared__ float sharedMem[INPUT_TILE_WIDTH];
 
-    if (inputIdx < N) sharedMem[tx] = in[inputIdx];
+    if (0 <= inputIdx && inputIdx < N) 
+    {
+        sharedMem[tx] = in[inputIdx];
+    }
+    else 
+    {
+        sharedMem[tx] = 0.0f;
+    }
     __syncthreads();
 
-    int outputIdx = inputIdx - radius;
-    if (0 <= outputIdx && outputIdx < N - KERNEL_WIDTH + 1)
+    if (radius <= inputIdx && inputIdx < N - radius)
     {
-        float outValue = 0.0f;
-        for (int k = 0; k < KERNEL_WIDTH; k++)
+        if (0 <= tx-radius && tx-radius < outputTileSize)
         {
-            outValue += kernel[k] * sharedMem[tx - radius + k];
+            float outValue = 0.0f;
+            for (int k = 0; k < KERNEL_WIDTH; k++)
+            {
+                outValue += kernel[k] * sharedMem[tx - radius + k];
+            }
+            out[inputIdx-radius] = outValue;
         }
-        out[outputIdx] = outValue;
     }
+}
+
+__global__ void conv1d_output_tile(const float *in, float *out, int N)
+{
+    int tx = threadIdx.x, bx = blockIdx.x, radius = (KERNEL_WIDTH/2);
+    int inputTileSize = OUTPUT_TILE_WIDTH + 2 * radius;
+    int outputIdx = bx * OUTPUT_TILE_WIDTH + tx;
+
+    __shared__ float sharedMem[inputTileSize];
+
+    if (outputIdx < radius || outputIdx >= N-radius)
+    {
+        return;
+    }
+
+    if (tx < radius)
+    {
+        sharedMem[tx] = in[outputIdx-radius];
+    }
+    if (OUTPUT_TILE_WIDTH-tx >= radius)
+    {
+        sharedMem[tx+2*radius] = in[outputIdx+radius];
+    }
+    sharedMem[tx+radius] = in[outputIdx];
+    __syncthreads();
+
+    float pValue = 0.0f;
+    for (int k=0; k<KERNEL_WIDTH; k++)
+    {
+        pValue = kernel[k] * sharedMem[tx+k];
+    }
+    out[outputIdx-radius] = pValue;
 }
 
 void launch_conv1d(const float *a, const float *b, float *c, int N){
