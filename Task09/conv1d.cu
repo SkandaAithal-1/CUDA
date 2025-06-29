@@ -84,7 +84,7 @@ __global__ void conv1d_output_tile(const float *in, float *out, int N)
     float pValue = 0.0f;
     for (int k=0; k<KERNEL_WIDTH; k++)
     {
-        pValue = kernel[k] * sharedMem[tx+k];
+        pValue += kernel[k] * sharedMem[tx+k];
     }
     out[outputIdx-radius] = pValue;
 }
