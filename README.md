@@ -58,6 +58,8 @@ Implemented a kernel to compute the L2 norm of a vector. Used vector sum kernel 
 **Summary** :  
 Implemented a kernel to transpose a matrix.
 
+---
+
 ## Task 09: 1d Convolution
 
 **Summary** :  
@@ -65,3 +67,13 @@ Implemented a simple kernel for 1d convolution with no optimisation consideratio
 
 **Update** :  
 Optimized the kernel to use shared memory to reduce global memory access. Tiling is done so that the thread block covers the input vector.
+
+**Update** :  
+Another optimized kernel where the threads map to the output vector. This makes loading the input slightly complex.
+
+---
+
+## Task 10: 2d Convolution
+
+**Summary** :  
+Implemented an optimised kernel for 2d convolution. The threads map to the input vector and some threads of the block are turned off during output vector calculation.
