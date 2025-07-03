@@ -77,6 +77,8 @@ Another optimized kernel where the threads map to the output vector. This makes 
 
 **Summary** :  
 Implemented an optimised kernel for 2d convolution. The threads map to the input vector and some threads of the block are turned off during output vector calculation.
+ 
+---
 
 ## Task 11: Stencil
 
