@@ -77,3 +77,15 @@ Another optimized kernel where the threads map to the output vector. This makes 
 
 **Summary** :  
 Implemented an optimised kernel for 2d convolution. The threads map to the input vector and some threads of the block are turned off during output vector calculation.
+
+## Task 11: Stencil
+
+**Summary** :  
+Implemented a 3D 7 point stencil operation. The tiling is similar to the 2D convolution.
+
+**Details** :
+
+- This uses thread coarsening to reduce the number of threads launched.
+- The data reuse in this case is less compared to 2D convolution, so the upper limit on floating-point to global memory access ratio is not as high.
+- This is the motivation for thread coarsening.
+- Register tiling is also done here to reduce the amount of shared memory used since data in the third dimension is not necessarily shared with the entire block.
