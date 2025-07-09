@@ -77,7 +77,7 @@ Another optimized kernel where the threads map to the output vector. This makes 
 
 **Summary** :  
 Implemented an optimised kernel for 2d convolution. The threads map to the input vector and some threads of the block are turned off during output vector calculation.
- 
+
 ---
 
 ## Task 11: Stencil
@@ -91,3 +91,20 @@ Implemented a 3D 7 point stencil operation. The tiling is similar to the 2D conv
 - The data reuse in this case is less compared to 2D convolution, so the upper limit on floating-point to global memory access ratio is not as high.
 - This is the motivation for thread coarsening.
 - Register tiling is also done here to reduce the amount of shared memory used since data in the third dimension is not necessarily shared with the entire block.
+
+---
+
+## Task 12: Histogram
+
+**Summar** :  
+Implemented a kernel to compute histogram of a vector. It uses atomic operations with privatization and thread coarsening with interleaved partitioning scheme.
+
+**Learned** :
+
+- Atomic operations in CUDA which are basically read-modify-write operations that are executed together without interruption.
+- This is useful when there is thread interference, where multiple threads try to read and write to the same memory at the same time.
+- Atomic operations are sequential and hence they do not efficiently use memory throughput. If last layer cache supports atomic operations, then they can better utilize memory throughput since it takes less clock cycles to access cache.
+- Privatization is a technique to reduce contention on atomic operations by maintaining a private copy of the histogram.
+- Thread coarsening to reduce the contention on atomic operations in the end during reduction of private histograms.
+- Two schemes for thread coarsening : Contiguous and Interleaved partitioning.
+- Aggregation in case there is a large concentration of identical values in localised areas of the input vector.

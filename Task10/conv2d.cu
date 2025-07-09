@@ -5,7 +5,7 @@ const int INPUT_TILE_WIDTH = 32;
 int KERNEL_WIDTH = 5;
 __constant__ float kernel[KERNEL_WIDTH];
 
-__global__ void conv2d(const float *in, float *out, int N, int M)
+__global__ void conv2d(const float *I, float *O, int N, int M)
 {
     int tx = threadIdx.x, ty = threadIdx.y, bx = blockIdx.x, by = blockIdx.y;
     int radius = (KERNEL_WIDTH)/2;
@@ -16,7 +16,7 @@ __global__ void conv2d(const float *in, float *out, int N, int M)
 
     if (0 <= inputX && inputX < N && 0 <= inputY && inputY < M)
     {
-        sharedMem[tx][ty] = in[inputX][inputY];
+        sharedMem[tx][ty] = I[inputX][inputY];
     }
     else
     {
@@ -34,7 +34,7 @@ __global__ void conv2d(const float *in, float *out, int N, int M)
                     pValue += kernel[i][j] * sharedMem[tx-radius+i][ty-radius+j];
                 }
             }
-            out[inputX-radius][inputY-radius] = pValue;
+            O[inputX-radius][inputY-radius] = pValue;
         }
     }
 }
